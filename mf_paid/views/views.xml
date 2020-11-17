@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <!-- Inherit Form View to Modify it -->
+    <record id="paid_field" model="ir.ui.view">
+        <field name="name">paid field</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_residual']" position="after">
+                <field name="paid" widget="monetary"/>
+            </xpath>
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="is_bigger" invisible="1"/>
+                <field name="pass_bigger" attrs="{'invisible': [('is_bigger', '=', False)],'readonly': [('state', '!=', 'draft')]}"/>
+            </xpath>
+        </field>
+    </record>
+      <record id="paid_field_total" model="ir.ui.view">
+          <field name="name">total of paid in tree</field>
+          <field name="model">account.move</field>
+          <field name="inherit_id" ref="account.view_invoice_tree"/>
+          <field name="arch" type="xml">
+
+              <xpath expr="//field[@name='amount_total_signed']" position="after">
+                <field name="paid" sum="Total" widget="monetary"/>
+              </xpath>
+
+          </field>
+      </record>
+  </data>
+</odoo>
